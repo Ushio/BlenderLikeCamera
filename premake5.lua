@@ -17,14 +17,14 @@ project "BlenderLikeCamera"
     -- raylib
     RAY_ROOT = "libs/raylib-2.5.0-Win64-msvc15";
     RAY_DLL = path.join(RAY_ROOT, "bin/raylib.dll");
-    RAY_DLL_FULLPATH = path.join(os.getcwd(), RAY_DLL);
+    -- RAY_DLL_FULLPATH = path.join(os.getcwd(), RAY_DLL);
 
     includedirs { "%{RAY_ROOT}/include" }
     libdirs { "%{RAY_ROOT}/lib" }
     links { "raylib" }
 
     postbuildcommands {
-        "{COPY} " .. RAY_DLL_FULLPATH .. " %{cfg.targetdir}"
+        "{COPY} " .. path.join("%{cfg.targetdir}/../", RAY_DLL) .. " %{cfg.targetdir}"
     }
 
     -- glm

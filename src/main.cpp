@@ -138,12 +138,13 @@ int main(void)
 	const int screenWidth = 1920;
 	const int screenHeight = 1080;
 
+	SetConfigFlags(FLAG_WINDOW_RESIZABLE);
 	InitWindow(screenWidth, screenHeight, "Blender Like Camera");
 
 	// Define the camera to look into our 3d world
 	Camera3D camera = { 0 };
 	camera.position = Vector3 { 10.0f, 10.0f, 10.0f };  // Camera position
-	camera.target = Vector3 { 0.1f, 0.1f, 0.1f };      // Camera looking at point
+	camera.target = Vector3 { 0, 0, 0};      // Camera looking at point
 	camera.up = Vector3 { 0.0f, 1.0f, 0.0f };          // Camera up vector (rotation towards target)
 	camera.fovy = 45.0f;                                // Camera field-of-view Y
 	camera.type = CAMERA_PERSPECTIVE;                   // Camera mode type
