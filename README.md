@@ -5,13 +5,18 @@
 ## build
 ```
 
-.\tools\premake5.exe vs2017
+git submodule update --init
+tools\premake5 vs2017
 
 ```
 
 ## usage
 
 ```
+
+
+#include "raylib.h"
+#include "blenderlikecamera.hpp"
 
 int main(void)
 {
@@ -21,6 +26,7 @@ int main(void)
 	const int screenHeight = 1080;
 
 	SetConfigFlags(FLAG_WINDOW_RESIZABLE);
+	SetConfigFlags(FLAG_VSYNC_HINT);
 	InitWindow(screenWidth, screenHeight, "Blender Like Camera");
 
 	// Define the camera to look into our 3d world
@@ -34,13 +40,12 @@ int main(void)
 
 	Vector3 cubePosition = { 0.0f, 0.0f, 0.0f };
 
-	SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
+	// SetTargetFPS(60);
 	//--------------------------------------------------------------------------------------
 
-	// Main game loop
-	while (!WindowShouldClose())    // Detect window close button or ESC key
+	while (!WindowShouldClose())
 	{
-		BlenderLikeCameraUpdate(&camera);
+		blender_like_camera::UpdateCamera(&camera);
 
 		// Draw
 		//----------------------------------------------------------------------------------

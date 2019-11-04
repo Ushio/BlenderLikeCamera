@@ -1,8 +1,35 @@
 workspace "BlenderLikeCamera"
     location "build"
     configurations { "Debug", "Release" }
+    startproject "BlenderLikeCamera"
 
 architecture "x86_64"
+
+project "raylib"
+    kind "SharedLib"
+    language "C++"
+    targetdir "bin/"
+    systemversion "latest"
+    flags { "MultiProcessorCompile", "NoPCH" }
+
+    -- src
+    files { "libs/raylib/src/*.h", "libs/raylib/src/*.c" }
+    includedirs { "libs/raylib/src/" }
+    includedirs { "libs/raylib/src/external/glfw/include" }
+
+    defines {"GRAPHICS_API_OPENGL_33", "PLATFORM_DESKTOP", "BUILD_LIBTYPE_SHARED"}
+    links { "winmm" }
+    
+    filter {"Debug"}
+        targetname ("raylib_d")
+        optimize "Off"
+    filter {"Release"}
+        targetname ("raylib")
+        optimize "Full"
+    filter{}
+
+    -- strcopy etc
+    disablewarnings { "4996"} 
 
 project "BlenderLikeCamera"
     kind "ConsoleApp"
@@ -13,24 +40,19 @@ project "BlenderLikeCamera"
 
     -- Src
     files { "src/**.h", "src/**.hpp", "src/**.cpp" }
+    defines { "GRAPHICS_API_OPENGL_33", "PLATFORM_DESKTOP"}
 
     -- raylib
-    RAY_ROOT = "libs/raylib-2.5.0-Win64-msvc15";
-    RAY_DLL = path.join(RAY_ROOT, "bin/raylib.dll");
-    -- RAY_DLL_FULLPATH = path.join(os.getcwd(), RAY_DLL);
+    dependson { "raylib" }
 
-    includedirs { "%{RAY_ROOT}/include" }
-    libdirs { "%{RAY_ROOT}/lib" }
-    links { "raylib" }
+    filter {"Debug"}
+        links { "raylib_d" }
+    filter {"Release"}
+        links { "raylib" }
+    filter{}
 
-    postbuildcommands {
-        "{COPY} " .. path.join("%{cfg.targetdir}/../", RAY_DLL) .. " %{cfg.targetdir}"
-    }
-
-    -- glm
-    includedirs { "libs/glm/" }
-    defines {"GLM_FORCE_CTOR_INIT"}
-    defines {"GLM_ENABLE_EXPERIMENTAL"}
+    includedirs { "libs/raylib/src/" }
+    libdirs { "bin" }
 
     symbols "On"
 
@@ -38,6 +60,6 @@ project "BlenderLikeCamera"
         targetname ("BlenderLikeCamera_Debug")
         optimize "Off"
     filter {"Release"}
-        targetname ("BlenderLikeCamera_Release")
+        targetname ("BlenderLikeCamera")
         optimize "Full"
     filter{}
