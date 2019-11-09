@@ -9,8 +9,7 @@ int main(void)
 	const int screenWidth = 1920;
 	const int screenHeight = 1080;
 
-	SetConfigFlags(FLAG_WINDOW_RESIZABLE);
-	SetConfigFlags(FLAG_VSYNC_HINT);
+	SetConfigFlags(FLAG_WINDOW_RESIZABLE | FLAG_VSYNC_HINT);
 	InitWindow(screenWidth, screenHeight, "Blender Like Camera");
 
 	// Define the camera to look into our 3d world
